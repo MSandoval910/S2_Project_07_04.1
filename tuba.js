@@ -8,9 +8,9 @@
  */
 
 /* global variables tracking status of each form section */
-var acresComplete = false;
-var cropsComplete = false;
-var monthsComplete = false;
+var acresComplete = true;
+var cropsComplete = true;
+var monthsComplete = true;
 var fuelComplete = true;
 
 /* global variables referencing sidebar h2 and p elements */
@@ -54,29 +54,25 @@ function verifyAcres() {
 /* verify at least one crops checkbox is checked */
 // function for the verify crops 
 function verifyCrops() {
-    var validity = true;
-    var messageText = "";
     try {
-        // if a crop isnt selected then it will throw the please select at least one crop.
-        if (!(cropsBox.checked)) {
-            throw "Please select at least one crop.";
-
+        for (var i = 0; i < 7; i++) {
+            if (cropsFieldset.getElementsByTagName("input")[i].checked) {
+                cropscomplete = true;
+                messageElement.innerHTML = ""; // clear previous
+                //   message or recommendation
+                testFormCompleteness();
+                i = 8;
+            }
         }
-
+        if (i === 7) {
+            throw "Please select at least one crop.";
+        }
     } catch (message) {
-        validity = false;
-        messageText = message;
-        cropsBox.value = "";
-
-
-
-    } finally {
-        cropsComplete = validity
-        messageHeadElement.innerHTML = messageText;
-        messageElement.innerHTML = "";
-        // remove any former recommendation heading messageElement.innerHTML = message; // display error
+        cropsComplete = false;
+        messageHeadElement.innerHTML = "";
+        messageElement.innerHTML = message;
+        // remove any former recommendation heading  // display error
         //   Message
-        testFormCompleteness();
     }
 
 }
